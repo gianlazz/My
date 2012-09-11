@@ -1,0 +1,12 @@
+[submodule ".submodules/CuteControllers"]
+	path = .submodules/CuteControllers
+	url = git://github.com/tylermenezes/CuteControllers.git
+[submodule ".submodules/TinyDb"]
+	path = .submodules/TinyDb
+	url = git://github.com/tylermenezes/TinyDb.git
+[submodule ".submodules/SPLClassLoader"]
+	path = .submodules/SPLClassLoader
+	url = git://gist.github.com/426304.git
+[submodule ".submodules/SerialServe"]
+	path = .submodules/SerialServe
+	url = https://github.com/tylermenezes/SerialServe.git

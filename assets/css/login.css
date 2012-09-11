@@ -1,0 +1,110 @@
+@import url(http://studentrnd.org/webfonts/fonts.css);
+body {
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+#wrap {
+    width: 800px;
+    background-color: rgba(0, 0, 0, .4);
+    color: white;
+    padding: 15px 0;
+}
+#inner {
+    width: 600px;
+    margin: 0 auto;
+    font: 2em "Serifa", "Georgia", serif;
+}
+#inner p, #inner h1, #inner h2 {
+    margin: 0;
+}
+#inner h1 {
+    font-weight: normal;
+}
+#inner input {
+    font: 1.3em "Serifa", "Georgia", serif;
+    display: block;
+    width: 100%;
+    margin: 0 0 3px 0;
+    padding: 0;
+}
+#inner input[type="submit"] {
+    width: auto;
+    float: right;
+    padding: 10px;
+    font-size: .9em;
+    text-shadow: 0px -1px 0px #001E1F;
+    color: white;
+    background-color: #003C3D;
+    background-image: -moz-linear-gradient(top, #1E5A5B, #001E1F);
+    background-image: -ms-linear-gradient(top, #1E5A5B, #001E1F);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1E5A5B), to(#001E1F));
+    background-image: -webkit-linear-gradient(top, #1E5A5B, #001E1F);
+    background-image: -o-linear-gradient(top, #1E5A5B, #001E1F);
+    background-image: linear-gradient(top, #1E5A5B, #001E1F);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e5a5b', endColorstr='#001e1f', GradientType=0);
+    border-color: #003C3D #001E1F #001E1F #003C3D;
+}
+.clearfix {
+    clear: both;
+    visibility: hidden;
+}
+input, textarea, select, .uneditable-input {
+    display: inline-block;
+    padding: 4px;
+    margin-bottom: 9px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #555;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+input, textarea {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+}
+
+.error {
+    color: #D02614;
+}
+
+#rfid h2 {
+    text-align: center;
+}
+
+.or-block {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.or-block span {
+    width:100px;
+    text-align: center;
+    float: left;
+    margin-top: -5px;
+    font-style: italic;
+}
+
+.or-block hr {
+    border-bottom: 2px solid white;
+    margin-left:auto;
+    margin-right:auto;
+    width:40%;
+    float: left;
+}
+
+.or-block hr:last-child {
+    clear: both;
+    float: none;
+    margin: 0;
+    border: 0;
+    visibility: hidden;
+}
