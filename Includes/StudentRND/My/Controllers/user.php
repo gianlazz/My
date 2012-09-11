@@ -32,6 +32,7 @@ class user extends \CuteControllers\Base\Rest
         $studentrnd_email_enabled = $this->request->post('studentrnd_email_enabled') ? TRUE : FALSE;
         $is_admin = $this->request->post('is_admin') ? TRUE : FALSE;
         $avatar_url = $this->request->post('avatar_url');
+        $groups = $this->request->post('groups');
 
         if (!$first_name || !$last_name || !$email) {
             $error = "First name, last name, and email are required.";
@@ -56,11 +57,14 @@ class user extends \CuteControllers\Base\Rest
                     if ($this->user->userID !== Models\User::current()->userID) {
                         $this->user->is_admin = $is_admin;
                     }
+
+
+                    $this->user->groupIDs = $groups;
                 }
                 $this->user->avatar_url = $avatar_url;
                 $this->user->update();
                 $this->redirect('?username=' . $this->user->username);
-            } catch (\Exception $ex) {
+            } catch (\CuteControllers\HttpError $ex) {
                 $error = $ex->getMessage();
                 require_once(TEMPLATE_DIR . '/Home/edit_user.php');
             }

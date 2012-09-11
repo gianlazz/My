@@ -25,6 +25,19 @@ class Group extends \TinyDb\Orm
                        'has_profile_badge' => $has_profile_badge));
     }
 
+    public function __get_users()
+    {
+        $collection = new \TinyDb\Collection('\StudentRND\My\Models\Mappings\UserGroup', \TinyDb\Sql::create()
+                                             ->select('*')
+                                             ->from(Mappings\UserGroup::$table_name)
+                                             ->where('userID = ?', $this->userID));
+
+        return $collection->each(function($mapping)
+        {
+            return $mapping->user;
+        });
+    }
+
     /**
      * Gets the plans associated with the group
      * @return \TinyDb\Collection Collection of associated Plans

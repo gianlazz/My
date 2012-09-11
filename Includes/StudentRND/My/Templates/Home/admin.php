@@ -39,7 +39,7 @@
                 <div class="control-group">
                     <label class="control-label" for="groups">Groups</label>
                     <div class="controls">
-                        <select name="groups" multiple="multiple">
+                        <select name="groups[]" multiple="multiple">
                             <?php include('widgets/group_options.php'); ?>
                         </select>
                     </div>

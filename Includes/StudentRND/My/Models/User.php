@@ -2,6 +2,8 @@
 
 namespace StudentRND\My\Models;
 
+use \StudentRND\My\Models\Mappings;
+
 class User extends \TinyDb\Orm
 {
     public static $table_name = 'users';
@@ -90,6 +92,54 @@ class User extends \TinyDb\Orm
 
     protected $created_at;
     protected $modified_at;
+
+    public function __get_groups()
+    {
+        $collection = new \TinyDb\Collection('\StudentRND\My\Models\Mappings\UserGroup', \TinyDb\Sql::create()
+                                             ->select('*')
+                                             ->from(Mappings\UserGroup::$table_name)
+                                             ->where('userID = ?', $this->userID));
+
+        return $collection->each(function($mapping)
+        {
+            return $mapping->group;
+        });
+    }
+
+    public function __get_groupIDs()
+    {
+        $collection = new \TinyDb\Collection('\StudentRND\My\Models\Mappings\UserGroup', \TinyDb\Sql::create()
+                                             ->select('*')
+                                             ->from(Mappings\UserGroup::$table_name)
+                                             ->where('userID = ?', $this->userID));
+
+        return $collection->each(function($mapping)
+        {
+            return $mapping->groupID;
+        });
+    }
+
+    public function __set_groupIDs($new_group_ids)
+    {
+        $current_group_ids = $this->groupIDs;
+
+        // Calculate added groups
+        foreach ($new_group_ids as $new_id)
+        {
+            if (!in_array($new_id, $current_group_ids)) {
+                Mappings\UserGroup::create($this->userID, $new_id);
+            }
+        }
+
+        // Calculate removed groups
+        foreach ($current_group_ids as $current_id)
+        {
+            if (!in_array($current_id, $new_group_ids)) {
+                $mapping = new Mappings\UserGroup(array('userID' => $this->userID, 'groupID' => $current_id));
+                $mapping->delete();
+            }
+        }
+    }
 
     /**
      * Gets the full name (first last).

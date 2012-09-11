@@ -27,6 +27,10 @@
                 <td colspan="2">
                     <label class="checkbox">
                         Groups:
+                        <select name="groups[]" multiple="multiple">
+                            <?php $current_groups = $user->groupIDs; ?>
+                            <?php include('group_options.php'); ?>
+                        </select>
                     </label>
                 </td>
             </tr>
