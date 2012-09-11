@@ -8,8 +8,47 @@ class user extends \CuteControllers\Base\Rest
 {
     public function before()
     {
-        $this->user = new Models\User(array('username' => $this->request->get('username')));
+        $this->user = \StudentRND\My\Models\User::current();
+        if ($this->request->get('username') !== NULL) {
+            $this->user = new \StudentRND\My\Models\User(array('username' => $this->request->get('username')));
+        }
     }
+
+    public function get_password()
+    {
+        include(TEMPLATE_DIR . '/Home/change_password.php');
+    }
+
+    public function post_password()
+    {
+        $current = $this->request->post('current');
+        $password = $this->request->post('password');
+        $password_confirm = $this->request->post('password2');
+
+        if (!$this->user->is_admin && $this->user->userID !== Models\User::current()->userID) {
+            $error = "You can't do that!";
+            require_once(TEMPLATE_DIR . '/Home/change_password.php');
+        } if (!isset($password) || !isset($password_confirm)) {
+            $error = "Please enter a password.";
+            require_once(TEMPLATE_DIR . '/Home/change_password.php');
+        } else if($password !== $password_confirm) {
+            $error = "Passwords did not match.";
+            require_once(TEMPLATE_DIR . '/Home/change_password.php');
+        } else if(!\StudentRND\My\Models\User::current()->validate_password($current)) {
+            $error = "Current password was incorrect.";
+            require_once(TEMPLATE_DIR . '/Home/change_password.php');
+        } else {
+            try {
+                $this->user->password = $password;
+                $this->user->update();
+                \CuteControllers\Router::redirect('/home');
+            } catch (\Exception $ex){
+                $error = $ex->getMessage();
+                require_once(TEMPLATE_DIR . '/Home/change_password.php');
+            }
+        }
+    }
+
     public function get_index()
     {
         if (Models\User::current()->is_admin || Models\User::current()->userID == $this->user->userID) {

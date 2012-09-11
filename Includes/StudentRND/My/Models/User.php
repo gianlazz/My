@@ -93,6 +93,19 @@ class User extends \TinyDb\Orm
     protected $created_at;
     protected $modified_at;
 
+    public static function create($username, $first_name, $last_name, $email, $password, $password_reset_required, $studentrnd_email_enabled, $is_admin)
+    {
+        return parent::create(array(
+                              'username' => $username,
+                              'first_name' => $first_name,
+                              'last_name' => $last_name,
+                              'email' => $email,
+                              'password' => self::get_salted_password($password),
+                              'password_reset_required' => $password_reset_required,
+                              'studentrnd_email_enabled' => $studentrnd_email_enabled,
+                              'is_admin' => $is_admin));
+    }
+
     public function __get_groups()
     {
         $collection = new \TinyDb\Collection('\StudentRND\My\Models\Mappings\UserGroup', \TinyDb\Sql::create()
@@ -162,9 +175,18 @@ class User extends \TinyDb\Orm
         if (strpos($this->password, '$') === FALSE) {
             // Validate the oldstyle password, and if it matches, force an update
             if (md5($password) === $this->password) {
-                $this->password_reset_required = TRUE;
-                $this->invalidate('password_reset_required');
-                $this->update();
+                try {
+                    // Update to use the new format
+                    $this->__set_password($password);
+                    $this->invalidate('password');
+                    $this->update();
+                } catch (\Exception $ex) {
+                    // Often we can't set the password because it doesn't meet new security requirements.
+                    // If that's the case, we'll force the user to change it.
+                    $this->password_reset_required = TRUE;
+                    $this->invalidate('password_reset_required');
+                    $this->update();
+                }
                 return TRUE;
             } else {
                 return FALSE;
@@ -206,6 +228,12 @@ class User extends \TinyDb\Orm
         $this->invalidate('avatar_url');
     }
 
+    private static function get_salted_password($password)
+    {
+        $salt = hash('md5', time() . rand(0,1000000) . $password);
+        return hash('whirlpool', $password . $salt) . '$' . $salt;
+    }
+
     /**
      * Updates the password using new password format
      * @param  string $new_password The new password
@@ -215,8 +243,7 @@ class User extends \TinyDb\Orm
         if (strlen($new_password) < 5 || !preg_match('/[0-9\\\\\/\!@#\$%\^&\*\(\)\-_=+\{\};:,<\.>]/', $new_password)) {
             throw new \Exception('Password must be at least 5 characters and contain at least one symbol or number.');
         }
-        $salt = hash('md5', time() . rand(0,1000000) . $new_password);
-        $this->password = hash('whirlpool', $new_password . $salt) . '$' . $salt;
+        $this->password = self::get_salted_password($new_password);
         $this->password_reset_required = FALSE;
         $this->invalidate('password');
         $this->invalidate('password_reset_required');

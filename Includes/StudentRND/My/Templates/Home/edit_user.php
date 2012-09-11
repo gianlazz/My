@@ -1,6 +1,6 @@
 <?php include_once('header.php'); ?>
     <div class="row">
-        <div class="span10 box">
+        <div class="span12 box">
             <form method="post">
                 <?php $user = $this->user; ?>
                 <?php include_once('widgets/user_edit.php'); ?>

@@ -1,23 +1,8 @@
 <?php include_once('header.php'); ?>
-<?php
-
-    $allgroups = new \TinyDb\Collection('\StudentRND\My\Models\Group', \TinyDb\Sql::create()
-                                                      ->select('*')
-                                                      ->from(\StudentRND\My\Models\Group::$table_name));
-
-    $allplans = new \TinyDb\Collection('\StudentRND\My\Models\Plan', \TinyDb\Sql::create()
-                                                      ->select('*')
-                                                      ->from(\StudentRND\My\Models\Plan::$table_name));
-
-    $allusers = new \TinyDb\Collection('\StudentRND\My\Models\User', \TinyDb\Sql::create()
-                                                       ->select('*')
-                                                       ->from(\StudentRND\My\Models\User::$table_name)
-                                                      ->order_by('userID DESC'));
-?>
     <div class="row">
         <div class="span5 box">
             <h2>Invite User</h2>
-            <form action="<?=\CuteControllers\Router::get_link('adduser');?>" method="post" class="form-horizontal">
+            <form action="<?=\CuteControllers\Router::get_link('create_user');?>" method="post" class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label" for="email">Email</label>
                     <div class="controls">
@@ -37,6 +22,18 @@
                     </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label" for="groups">StudentRND Email</label>
+                    <div class="controls">
+                        <input type="checkbox" name="studentrnd_email_enabled" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="groups">Is Admin</label>
+                    <div class="controls">
+                        <input type="checkbox" name="is_admin" />
+                    </div>
+                </div>
+                <div class="control-group">
                     <label class="control-label" for="groups">Groups</label>
                     <div class="controls">
                         <select name="groups[]" multiple="multiple">
@@ -44,7 +41,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-green">Invite</button>
+                <button type="submit" class="btn btn-green">Add and Send Email</button>
             </form>
         </div>
         <div class="span5 box">

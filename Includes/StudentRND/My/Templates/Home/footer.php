@@ -3,6 +3,7 @@
 </footer>
 </div>
 </div>
+</div>
 <script src="https://api.filepicker.io/v0/filepicker.js"></script>
 <script type="text/javascript">
     filepicker.setKey('<?php global $config; echo $config['filepickerio']['api_key'];?>');

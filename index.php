@@ -26,7 +26,7 @@ if (isset($config['app']['debug']) && $config['app']['debug']) {
 
 // Set some defines
 define('WEB_DIR', dirname(__FILE__));
-define('WEB_URI', $config['web']['path']);
+define('WEB_URI', $config['app']['path']);
 
 define('APP_URI', \CuteControllers\Router::get_app_uri());
 
@@ -41,6 +41,8 @@ define('INCLUDES_URI', WEB_URI . '/Includes');
 
 define('TEMPLATE_DIR', INCLUDES_DIR . '/StudentRND/My/Templates');
 define('TEMPLATE_URL', INCLUDES_URI . '/StudentRND/My/Templates');
+
+set_include_path(INCLUDES_DIR . PATH_SEPARATOR . get_include_path());
 
 // Start routing
 try {

@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Rokkitt:400,700);
+@import url(//fonts.googleapis.com/css?family=Rokkitt:400,700);
 body {
   background: url("../img/home/background.png");
 }
@@ -12,6 +12,57 @@ a.broken_link {
   text-decoration: none;
 }
 
+#whitewrap {
+  background: #fff;
+  margin: -5px auto 0 auto;
+  padding: 0 20px;
+}
+
+.container {
+  width: 1000px;
+}
+
+.span12 {
+  width: 920px;
+}
+
+.btn-block {
+  width: 100%;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-top: 10px;
+}
+
+.btn-xlarge {
+  padding: 20px 14px;
+  font-size: 25px;
+}
+
+.nav {
+  background: transparent;
+  padding: 7px 0 3px 3px;
+  width: 620px;
+}
+
+.nav-pills > li > a {
+  color: black;
+  padding: 4px 3px 3px 3px;
+  margin: 0 5px;
+  font: 18px "Rokkitt", sans-serif;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li > a:hover,
+.nav-pills .active > a:hover,
+nav-pills .active > a  {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  color: black;
+  background: transparent;
+  border-bottom: 3px solid #24B248;
+}
+
 .user-selector {
   height: 300px;
   overflow-y: auto;
@@ -19,7 +70,8 @@ a.broken_link {
 
 .user-selector .tiny-profile {
   float: left;
-  padding: 10px;
+  padding: 5px;
+  margin-bottom: -23px;
 }
 
 .tiny-profile img {
@@ -28,15 +80,60 @@ a.broken_link {
 }
 
 .tiny-profile span {
-  display: block;
   width: 100px;
   height: 15px;
-  margin-top: -23px;
+  position: relative;
+  top: -23px;
   padding: 4px 0;
+  background: rgba(0,0,0,.7);
+  display: block;
   text-align: center;
   color: white;
   overflow: hidden;
-  text-shadow:0px 0px 5px #333333
+}
+
+.pictures,
+.pictures-hero {
+  width: 896px;
+  height: 256px;
+  overflow: hidden;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  margin: 0 auto;
+}
+
+.pictures-hero {
+  text-align: center;
+  position: relative;
+  top: -256px;
+  margin-bottom: -236px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.pictures-hero h1 {
+  color: white;
+  font-size: 100px;
+  line-height: 100px;
+  font-family: "Rokkitt", sans-serif;
+  font-weight: 400;
+  margin-top: 78px;
+}
+
+.pictures img {
+  width: 128px;
+  height: 128px;
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+
+.pictures hr {
+  visibility: hidden;
+  clear: both;
 }
 
 .avatar-picker {
@@ -53,7 +150,8 @@ a.broken_link {
   font-variant: small-caps;
   color: white;
   background-color:rgba(0,0,0,0.5);
-  margin-top: -20px;
+  position: relative;
+  top: -20px;
 }
 
 #main {
@@ -123,7 +221,7 @@ br.clearfix {
 }
 
 #about h1 {
-  font-family: "Rokkitt", san-serif;
+  font-family: "Rokkitt", sans-serif;
   font-weight: 700;
   color: #333;
   margin: 0 20px 20px;

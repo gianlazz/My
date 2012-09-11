@@ -1,3 +1,18 @@
+<?php
+
+    $allgroups = new \TinyDb\Collection('\StudentRND\My\Models\Group', \TinyDb\Sql::create()
+                                                      ->select('*')
+                                                      ->from(\StudentRND\My\Models\Group::$table_name));
+
+    $allplans = new \TinyDb\Collection('\StudentRND\My\Models\Plan', \TinyDb\Sql::create()
+                                                      ->select('*')
+                                                      ->from(\StudentRND\My\Models\Plan::$table_name));
+
+    $allusers = new \TinyDb\Collection('\StudentRND\My\Models\User', \TinyDb\Sql::create()
+                                                       ->select('*')
+                                                       ->from(\StudentRND\My\Models\User::$table_name)
+                                                      ->order_by('userID DESC'));
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,35 +25,41 @@
         <div id="index" class="container">
             <div class="row" style="margin:10px 0px"></div>
             <a href="http://studentrnd.org/"><img src="<?=ASSETS_URI?>/img/home/srndlogotransparent.png"/></a>
-            <div class="row nav-bar">
-                <div class="span8">
-                    <ul class="nav nav-pills">
-                        <?php
-                            $pages = array(
-                                array('name' => 'Home', 'uri' => '/home'),
-                                array('name' => 'Me', 'uri' => '/user?username=' . \StudentRND\My\Models\User::current()->username),
-                                array('name' => 'Facebook Group', 'uri' => 'https://www.facebook.com/groups/studentrnd')
-                            );
+            <div id="whitewrap">
+                <div class="row nav-bar">
+                    <div class="span8">
+                        <ul class="nav nav-pills">
+                            <?php
+                                $pages = array(
+                                    array('name' => 'Home', 'uri' => '/home'),
+                                    array('name' => 'Profile', 'uri' => '/user'),
+                                    //array('name' => 'Groups', 'uri' => '/groups')
+                                );
 
-                            if (\StudentRND\My\Models\User::current()->is_admin) {
-                                $pages[] = array('name' => 'Admin', 'uri' => '/admin');
-                            }
+                                if (\StudentRND\My\Models\User::current()->is_admin) {
+                                    $pages[] = array('name' => 'Admin', 'uri' => '/admin');
+                                }
 
-                            $current = explode('/', $this->request->uri);
-                            $current = '/' . $current[1];
-                        ?>
-                        <?php foreach ($pages as $page) : ?>
-                            <li<?php if($current == $page['uri']) echo ' class="active"'; ?>>
-                                <a href="<?php echo \CuteControllers\Router::get_link($page['uri']); ?>"><?=$page['name'];?></a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                                $current = explode('/', $this->request->uri);
+                                $current = '/' . $current[1];
+                            ?>
+                            <?php foreach ($pages as $page) : ?>
+                                <?php
+                                    list($pre) = explode('?', $page['uri'], 2);
+                                    $pre = explode('/', $pre);
+                                    $page_base = '/' . $pre[1];
+                                ?>
+                                <li<?php if($current == $page_base) echo ' class="active"'; ?>>
+                                    <a href="<?php echo \CuteControllers\Router::get_link($page['uri']); ?>"><?=$page['name'];?></a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <div class="span4" id="logout">Ahoy, <strong><?=\StudentRND\My\Models\User::current()->name?></strong>! (<a href="<?=APP_URI?>/login/bye">Not you?</a>)</div>
                 </div>
-                <div class="span4" id="logout"><a href="<?=APP_URI?>/login/bye">Logout</a></div>
-            </div>
 
-            <?php if (isset($error)) : ?>
-                <div class="alert alert-error">
-                    <?=$error?>
-                </div>
-            <?php endif; ?>
+                <?php if (isset($error)) : ?>
+                    <div class="alert alert-error">
+                        <?=$error?>
+                    </div>
+                <?php endif; ?>

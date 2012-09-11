@@ -10,6 +10,6 @@ class index extends \CuteControllers\Base\Rest
     }
     public function get_index()
     {
-        require_once(TEMPLATE_DIR . '/Home/index.php');
+        include(TEMPLATE_DIR . '/Home/index.php');
     }
 }

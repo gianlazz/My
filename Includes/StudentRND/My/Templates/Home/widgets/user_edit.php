@@ -61,6 +61,15 @@
                 </tr>
             <?php endif; ?>
         <?php endif; ?>
+        <tr>
+            <td colspan="2">
+                <?php if(\StudentRND\My\Models\User::current()->is_admin && \StudentRND\My\Models\User::current()->userID !== $user->userID) : ?>
+                    <a href="<?=\CuteControllers\Router::get_link('/user/password?username=' . $user->username)?>" class="btn btn-inverse">Change Password</a>
+                <?php else : ?>
+                    <a href="<?=\CuteControllers\Router::get_link('/user/password')?>" class="btn btn-inverse">Change Password</a>
+                <?php endif; ?>
+            </td>
+        </tr>
     </table>
 </div>
 <hr style="visibility:hidden;clear:both" />
