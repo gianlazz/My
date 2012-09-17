@@ -1,5 +1,5 @@
 <footer>
-    <p>Fork me on GitHub!</p>
+    <p><a href="https://github.com/StudentRND/My">Fork me on GitHub!</a></p>
 </footer>
 </div>
 </div>

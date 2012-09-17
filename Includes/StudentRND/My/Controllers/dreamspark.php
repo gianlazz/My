@@ -11,7 +11,7 @@ class dreamspark extends \CuteControllers\Base\Rest
 
     public function get_login()
     {
-        if (count($this->user->groups) > 0) {
+        if (count($this->user->groups) == 0) {
             throw new \CuteControllers\HttpError(403);
         }
 

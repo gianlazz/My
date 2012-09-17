@@ -44,6 +44,10 @@ define('TEMPLATE_URL', INCLUDES_URI . '/StudentRND/My/Templates');
 
 set_include_path(INCLUDES_DIR . PATH_SEPARATOR . get_include_path());
 
+// Include Stripe
+require_once(INCLUDES_DIR . '/Stripe/Stripe.php');
+Stripe::setApiKey($config['stripe']['secret']);
+
 // Start routing
 try {
     \CuteControllers\Router::start('Includes/StudentRND/My/Controllers');
@@ -52,7 +56,10 @@ try {
         \CuteControllers\Router::redirect('/login');
     } else {
         Header("Status: " . $err->getCode() . " " . $err->getMessage());
+        $error = "Error: " . $err->getMessage();
+        include(TEMPLATE_DIR . '/Home/error.php');
     }
 } catch (\Exception $ex) {
-    echo "Error: $ex";
+    $error = "Error: $ex";
+    include(TEMPLATE_DIR . '/Home/error.php');
 }

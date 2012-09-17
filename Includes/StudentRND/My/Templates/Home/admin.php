@@ -57,12 +57,11 @@
         <div class="span12 box">
             <h2>Groups</h2>
 
-            <table class="table table-grid">
+            <table class="table table-grid table-bordered table-condensed">
                 <thead>
                     <tr>
                         <td>Name</td>
                         <td>Description</td>
-                        <td>Group Page</td>
                         <td>Profile Bagde</td>
                         <td>Action</td>
                     </tr>
@@ -73,9 +72,9 @@
                         <tr>
                             <td><input type="text" name="name" value="<?=$group->name?>" /></td>
                             <td><input type="text" name="description" value="<?=$group->description?>" /></td>
-                            <td><input type="checkbox" name="has_group_page" <?php if($group->has_group_page) echo 'checked="checked"'; ?> /></td>
                             <td><input type="checkbox" name="has_profile_badge" <?php if($group->has_profile_badge) echo 'checked="checked"'; ?> /></td>
-                            <td><input type="submit" value="Update" /></td>
+                            <td><button type="submit" class="btn" name="update" value="1"><i class="icon-ok-circle"></i></button>
+                                <button type="submit" class="btn" name="delete" value="1"><i class="icon-trash"></i></button></td>
                         </tr>
                     </form>
                 <? endforeach; ?>
@@ -83,7 +82,6 @@
                     <tr>
                         <td><input type="text" name="name" /></td>
                         <td><input type="text" name="description" /></td>
-                        <td><input type="checkbox" name="has_group_page" /></td>
                         <td><input type="checkbox" name="has_profile_badge" /></td>
                         <td><input type="submit" value="Add" /></td>
                     </tr>
@@ -92,14 +90,14 @@
         </div>
         <div class="span12 box">
             <h2>Plans</h2>
-            <table class="table table-grid">
+            <table class="table table-grid table-bordered table-condensed">
                 <thead>
                     <tr>
                         <td>Name</td>
+                        <td>Description</td>
                         <td>Stripe ID</td>
-                        <td>Amount</td>
+                        <td style="width:100px">Amount</td>
                         <td>Period</td>
-                        <td>Group</td>
                         <td>Action</td>
                     </tr>
                 </thead>
@@ -108,7 +106,8 @@
                         <input type="hidden" name="planID" value="<?=$plan->planID;?>" />
                         <tr>
                             <td><input type="text" name="name" value="<?=$plan->name?>" style="width: 150px"/></td>
-                            <td><input type="text" name="stripe_id" value="<?=$plan->stripe_id?>" style="width: 150px"/></td>
+                            <td><input type="text" name="description" value="<?=$plan->description?>" style="width: 200px"/></td>
+                            <td><input type="text" name="stripe_id" value="<?=$plan->stripe_id?>" style="width: 200px"/></td>
                             <td class="input-prepend"><span class="add-on">$</span><input type="text" name="amount" value="<?=$plan->amount?>" style="width:40px"  /></td>
                             <td>
                                 <select name="period" style="width:60px;">
@@ -118,34 +117,22 @@
                                     <option value="year" <?php if($plan->period == 'year') echo 'selected="true"' ?>>Yearly</option>
                                 </select>
                             </td>
-                            <td>
-                                <select name="groupID" style="width: 100px">
-                                    <?php foreach ($allgroups as $group) : ?>
-                                        <option value="<?=$group->groupID?>" <?php if ($plan->groupID == $group->groupID) echo 'selected="true"'; ?>><?=$group->name?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </td>
-                            <td><input type="submit" value="Update" /></td>
+                            <td><button type="submit" class="btn" name="update" value="1"><i class="icon-ok-circle"></i></button>
+                                <button type="submit" class="btn" name="delete" value="1"><i class="icon-trash"></i></button></td>
                         </tr>
                     </form>
                 <? endforeach; ?>
                 <form action="<?=\CuteControllers\Router::get_link('/admin/create_plan')?>" method="post">
                     <tr>
                         <td><input type="text" name="name" style="width: 150px" /></td>
-                        <td><input type="text" name="stripe_id" style="width: 150px" /></td>
+                        <td><input type="text" name="description" style="width: 200px" /></td>
+                        <td><input type="text" name="stripe_id" style="width: 200px" /></td>
                         <td class="input-prepend"><span class="add-on">$</span><input type="text" name="amount" style="width:40px" /></td>
                         <td>
                             <select name="period" style="width:60px;">
                                 <option value="week">Weekly</option>
                                 <option value="month" selected="true">Monthly</option>
                                 <option value="year">Yearly</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="groupID" style="width: 100px">
-                                <?php foreach ($allgroups as $group) : ?>
-                                    <option value="<?=$group->groupID?>"><?=$group->name?></option>
-                                <?php endforeach; ?>
                             </select>
                         </td>
                         <td><input type="submit" value="Add" /></td>

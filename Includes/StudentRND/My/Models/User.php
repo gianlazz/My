@@ -2,6 +2,7 @@
 
 namespace StudentRND\My\Models;
 
+use \StudentRND\My\Models;
 use \StudentRND\My\Models\Mappings;
 
 class User extends \TinyDb\Orm
@@ -104,6 +105,33 @@ class User extends \TinyDb\Orm
                               'password_reset_required' => $password_reset_required,
                               'studentrnd_email_enabled' => $studentrnd_email_enabled,
                               'is_admin' => $is_admin));
+    }
+
+    public function __get_plans()
+    {
+        return new \TinyDb\Collection('\StudentRND\My\Models\Mappings\UserPlan', \TinyDb\Sql::create()
+                                             ->select('*')
+                                             ->from(Mappings\UserPlan::$table_name)
+                                             ->where('userID = ?', $this->userID));
+    }
+
+    public function has_plan($plan)
+    {
+        return ($this->plans->find_one(function($new_plan) use($plan) {
+            return $new_plan->planID == $plan->planID;
+        }) !== NULL);
+    }
+
+    public function has_group(Models\Group $group)
+    {
+        foreach($this->groups as $my_group)
+        {
+            if ($my_group->groupID === $group->groupID) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function __get_groups()

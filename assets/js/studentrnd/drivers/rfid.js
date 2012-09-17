@@ -40,6 +40,7 @@ define(['jquery', 'tylermenezes/serial-bus'], function(jQuery, SerialBus) {
             if (SerialBus.IsRunning && SerialBus.PortAvailable(3)) { // Check if COM3 is available, since that's where the RFID reader binds...
                 log('RFID is available');
                 _this.rawPort = new SerialBus.SerialPort(3);
+                _this.rawPort.Enable();
                 _this.rawPort.OnDataReceived.register(function(data)
                 {
                     if (!_hasRecievedTag) {

@@ -82,16 +82,17 @@ EMAIL;
     public function post_create_plan()
     {
         $name = $this->request->post('name');
+        $description = $this->request->post('description');
+        $stripe_id = $this->request->post('stripe_id');
         $amount = $this->request->post('amount');
         $period = $this->request->post('period');
-        $groupID = $this->request->post('groupID');
 
-        if (!$name || !$amount || !$period || !$groupID) {
+        if (!$name || !$description || !$stripe_id || !$amount || !$period) {
             $error = 'All fields are required!';
             include(TEMPLATE_DIR . '/Home/admin.php');
         } else {
             try {
-                \StudentRND\My\Models\Plan::create($name, $amount, $period, $groupID);
+                \StudentRND\My\Models\Plan::create($name, $description, $stripe_id, $amount, $period);
                 $this->redirect('/admin');
             } catch (\Exception $ex) {
                 $error = $ex->getMessage();
@@ -102,22 +103,28 @@ EMAIL;
 
     public function post_update_plan()
     {
+        if ($this->request->post('delete')) {
+            return $this->post_delete_plan();
+        }
+
         $planID = $this->request->post('planID');
+        $description = $this->request->post('description');
+        $stripe_id = $this->request->post('stripe_id');
         $name = $this->request->post('name');
         $amount = $this->request->post('amount');
         $period = strtolower($this->request->post('period'));
-        $groupID = intval($this->request->post('groupID'));
 
-        if (!$name || !$amount || !$period || !$groupID) {
+        if (!$name || !$description || !$stripe_id || !$amount || !$period) {
             $error = 'All fields are required!';
             include(TEMPLATE_DIR . '/Home/admin.php');
         } else {
             try {
                 $plan = new \StudentRND\My\Models\Plan($planID);
                 $plan->name = $name;
+                $plan->description = $description;
+                $plan->stripe_id = $stripe_id;
                 $plan->amount = $amount;
                 $plan->period = $period;
-                $plan->groupID = $groupID;
                 $plan->update();
                 $this->redirect('/admin');
             } catch (\Exception $ex) {
@@ -127,12 +134,28 @@ EMAIL;
         }
     }
 
+    public function post_delete_plan()
+    {
+        $planID = $this->request->post('planID');
+        try {
+            $plan = new \StudentRND\My\Models\Plan($planID);
+            $plan->delete();
+            $this->redirect('/admin');
+        } catch (\Exception $ex) {
+            $error = $ex->getMessage();
+            include(TEMPLATE_DIR . '/Home/admin.php');
+        }
+    }
+
     public function post_update_group()
     {
+        if ($this->request->post('delete')) {
+            return $this->post_delete_group();
+        }
+
         $groupID = $this->request->post('groupID');
         $name = $this->request->post('name');
         $description = $this->request->post('description');
-        $has_group_page = $this->request->post('has_group_page') ? TRUE : FALSE;
         $has_profile_badge = $this->request->post('has_profile_badge') ? TRUE : FALSE;
 
         if (!$name || !$description) {
@@ -158,7 +181,6 @@ EMAIL;
     {
         $name = $this->request->post('name');
         $description = $this->request->post('description');
-        $has_group_page = $this->request->post('has_group_page') ? TRUE : FALSE;
         $has_profile_badge = $this->request->post('has_profile_badge') ? TRUE : FALSE;
 
         if (!$name || !$description) {
@@ -172,6 +194,19 @@ EMAIL;
                 $error = $ex->getMessage();
                 include(TEMPLATE_DIR . '/Home/admin.php');
             }
+        }
+    }
+
+    public function post_delete_group()
+    {
+        $groupID = $this->request->post('groupID');
+        try {
+            $group = new \StudentRND\My\Models\Group($groupID);
+            $group->delete();
+            $this->redirect('/admin');
+        } catch (\Exception $ex) {
+            $error = $ex->getMessage();
+            include(TEMPLATE_DIR . '/Home/admin.php');
         }
     }
 }

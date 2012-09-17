@@ -12,6 +12,10 @@
                                                        ->select('*')
                                                        ->from(\StudentRND\My\Models\User::$table_name)
                                                       ->order_by('userID DESC'));
+    $allplans = new \TinyDb\Collection('\StudentRND\My\Models\Plan', \TinyDb\Sql::create()
+                                                       ->select('*')
+                                                       ->from(\StudentRND\My\Models\Plan::$table_name)
+                                                      ->order_by('planID DESC'));
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,15 +37,25 @@
                                 $pages = array(
                                     array('name' => 'Home', 'uri' => '/home'),
                                     array('name' => 'Profile', 'uri' => '/user'),
+                                    array('name' => 'Membership', 'uri' => '/subscriptions'),
                                     //array('name' => 'Groups', 'uri' => '/groups')
                                 );
+
+                                if (\StudentRND\My\Models\User::current()->has_group(new \StudentRND\My\Models\Group(8))) {
+                                    $pages[] = array('name' => 'CodeDay', 'uri' => '/codeday-admin');
+                                }
 
                                 if (\StudentRND\My\Models\User::current()->is_admin) {
                                     $pages[] = array('name' => 'Admin', 'uri' => '/admin');
                                 }
 
-                                $current = explode('/', $this->request->uri);
-                                $current = '/' . $current[1];
+                                if (isset($this)) {
+                                    $current = explode('/', $this->request->uri);
+                                    $current = '/' . $current[1];
+                                } else {
+                                    $pages[] = array('name' => 'Error', 'uri' => '/error');
+                                    $current = '/error';
+                                }
                             ?>
                             <?php foreach ($pages as $page) : ?>
                                 <?php

@@ -1,6 +1,6 @@
 require.config({
     urlArgs: 'noCache=' + Math.round((new Date()).getTime() / (1000 * 120)),
-    baseUrl: '/studentrnd/assets/js/'
+    baseUrl: '/assets/js/'
 });
 define(['jquery', 'studentrnd/log'], function(jQuery){
     return new (function(){

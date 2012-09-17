@@ -9,21 +9,22 @@ class Plan extends \TinyDb\Orm
 
     protected $planID;
     protected $name;
+    protected $description;
     protected $stripe_id;
     protected $amount;
     protected $period;
-    protected $groupID;
 
     protected $created_at;
     protected $modified_at;
 
-    public static function create($name, $amount, $period, $groupID)
+    public static function create($name, $description, $stripe_id, $amount, $period)
     {
         return parent::create(array(
                               'name' => $name,
+                              'description' => $description,
+                              'stripe_id' => $stripe_id,
                               'amount' => intval($amount * 100),
-                              'period' => $period,
-                              'groupID' => $groupID
+                              'period' => $period
                               ));
     }
 
@@ -46,14 +47,5 @@ class Plan extends \TinyDb\Orm
     public function __validate_period($new)
     {
         return in_array($new, array('month', '3month', '6month', 'year'));
-    }
-
-    /**
-     * Gets the group associated with the Plan
-     * @return Group Group associated with the plan
-     */
-    public function __get_group()
-    {
-        return new \StudentRND\My\Models\Group($this->groupID);
     }
 }
