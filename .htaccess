@@ -1,5 +1,22 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
+
+# CodeDay Global Page
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{HTTP_HOST} ^(www\.)?codeday\.org+$
+RewriteRule ^([\w\.]*)$ index.php/codeday/global/$1 [QSA,L]
+
+# Specific CodeDay
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{HTTP_HOST} ^([^.]+)\.codeday\.org+$
+RewriteRule ^(.*)/(.*)/([\w\.]*)$ index.php/codeday/view/$3?name=%1&month=$2&year=$1 [QSA,L]
+
+# Next CodeDay
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{HTTP_HOST} ^([^.]+)\.codeday\.org+$
+RewriteRule ^([\w\.]*)$ index.php/codeday/view/$1?name=%1 [QSA,L]
+
+# Main Site
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (.*) index.php/$1 [QSA,L]

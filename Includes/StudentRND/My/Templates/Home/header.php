@@ -42,7 +42,7 @@
                                 );
 
                                 if (\StudentRND\My\Models\User::current()->has_group(new \StudentRND\My\Models\Group(8))) {
-                                    $pages[] = array('name' => 'CodeDay', 'uri' => '/codeday-admin');
+                                    $pages[] = array('name' => 'CodeDay', 'uri' => '/codeday');
                                 }
 
                                 if (\StudentRND\My\Models\User::current()->is_admin) {

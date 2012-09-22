@@ -1,0 +1,38 @@
+#index .box h1, #index .box h2, #index .box img {
+    text-align: center;
+    margin: 0 auto;
+}
+
+body {
+    background: url('http://www.othyr.com/images/furley_bg.png');
+}
+
+.hero-unit, .hero-unit p, .hero-unit .btn{
+    text-shadow: 2px 2px 2px black;
+}
+
+.hero-unit a {
+    color: white;
+    text-decoration: underline;
+}
+
+.nav {
+    margin-top: 20px;
+}
+
+.box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.box.span6 {
+    width: 418px;
+}
+
+.box.span12
+{
+    width:900px;
+}

@@ -10,3 +10,6 @@
 [submodule ".submodules/SerialServe"]
 	path = .submodules/SerialServe
 	url = https://github.com/tylermenezes/SerialServe.git
+[submodule ".submodules/FastForms"]
+	path = .submodules/FastForms
+	url = git@github.com:tylermenezes/FastForms.git

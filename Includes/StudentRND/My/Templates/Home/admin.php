@@ -97,7 +97,7 @@
                         <td>Description</td>
                         <td>Stripe ID</td>
                         <td style="width:100px">Amount</td>
-                        <td>Period</td>
+                        <td>Interval</td>
                         <td>Action</td>
                     </tr>
                 </thead>
@@ -112,8 +112,6 @@
                             <td>
                                 <select name="period" style="width:60px;">
                                     <option value="month" <?php if($plan->period == 'month') echo 'selected="true"' ?>>Monthly</option>
-                                    <option value="3month" <?php if($plan->period == '3month') echo 'selected="true"' ?>>Every 3 Months</option>
-                                    <option value="3month" <?php if($plan->period == '3month') echo 'selected="true"' ?>>Every 6 Months</option>
                                     <option value="year" <?php if($plan->period == 'year') echo 'selected="true"' ?>>Yearly</option>
                                 </select>
                             </td>
@@ -130,7 +128,6 @@
                         <td class="input-prepend"><span class="add-on">$</span><input type="text" name="amount" style="width:40px" /></td>
                         <td>
                             <select name="period" style="width:60px;">
-                                <option value="week">Weekly</option>
                                 <option value="month" selected="true">Monthly</option>
                                 <option value="year">Yearly</option>
                             </select>

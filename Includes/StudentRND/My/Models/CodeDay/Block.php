@@ -11,7 +11,12 @@ class Block extends \TinyDb\Orm
 
     protected $blockID;
     protected $title;
+
+    public static $__class_image = 'image-picker';
     protected $image;
+
+    public static $__name_html = 'Block HTML';
+    public static $__class_html = 'html-editor input-xxlarge';
     protected $html;
     protected $sort;
 

@@ -13,7 +13,7 @@ class Team extends \TinyDb\Orm
     protected $name;
     protected $image;
     protected $presentation_link;
-    protected $game_link;
+    protected $product_link;
 
     protected $eventID;
 
