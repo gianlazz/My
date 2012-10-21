@@ -51,6 +51,12 @@
                     <?php include('widgets/user_preview.php'); ?>
                 <?php endforeach; ?>
             </div>
+            <div class="rfid-scan">
+                <p>(Have the user swipe their token to load their profile.)</p>
+                <form method="post" action="<?=\CuteControllers\Router::get_link('/admin/user_lookup')?>">
+                    <input type="text" name="rfID" />
+                </form>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -62,6 +68,7 @@
                     <tr>
                         <td>Name</td>
                         <td>Description</td>
+                        <td>Type</td>
                         <td>Profile Bagde</td>
                         <td>Action</td>
                     </tr>
@@ -72,6 +79,14 @@
                         <tr>
                             <td><input type="text" name="name" value="<?=$group->name?>" /></td>
                             <td><input type="text" name="description" value="<?=$group->description?>" /></td>
+                            <td>
+                                <select name="type">
+                                    <?php $options = array('open', 'closed', 'private', 'secret'); ?>
+                                    <?php foreach ($options as $option) : ?>
+                                        <option <?php if ($option == $group->type) echo 'selected="true"'?>><?=$option?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
                             <td><input type="checkbox" name="has_profile_badge" <?php if($group->has_profile_badge) echo 'checked="checked"'; ?> /></td>
                             <td><button type="submit" class="btn" name="update" value="1"><i class="icon-ok-circle"></i></button>
                                 <button type="submit" class="btn" name="delete" value="1"><i class="icon-trash"></i></button></td>
@@ -82,6 +97,14 @@
                     <tr>
                         <td><input type="text" name="name" /></td>
                         <td><input type="text" name="description" /></td>
+                        <td>
+                            <select name="type">
+                                <option selected="true">open</option>
+                                <option>closed</option>
+                                <option>private</option>
+                                <option>secret</option>
+                            </select>
+                        </td>
                         <td><input type="checkbox" name="has_profile_badge" /></td>
                         <td><input type="submit" value="Add" /></td>
                     </tr>

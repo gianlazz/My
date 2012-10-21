@@ -11,15 +11,17 @@ class Group extends \TinyDb\Orm
     protected $name;
     protected $description;
     protected $has_profile_badge;
+    protected $type;
 
     protected $created_at;
     protected $modified_at;
 
-    public static function create($name, $description, $has_profile_badge)
+    public static function create($name, $description, $type, $has_profile_badge)
     {
         return parent::create(array(
                        'name' => $name,
                        'description' => $description,
+                       'type' => $type,
                        'has_profile_badge' => $has_profile_badge));
     }
 
@@ -28,7 +30,7 @@ class Group extends \TinyDb\Orm
         $collection = new \TinyDb\Collection('\StudentRND\My\Models\Mappings\UserGroup', \TinyDb\Sql::create()
                                              ->select('*')
                                              ->from(Mappings\UserGroup::$table_name)
-                                             ->where('userID = ?', $this->userID));
+                                             ->where('groupID = ?', $this->groupID));
 
         return $collection->each(function($mapping)
         {

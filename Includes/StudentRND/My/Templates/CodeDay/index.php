@@ -14,7 +14,12 @@
             <h1>Sponsors:</h1>
             <?php include('sponsors.php') ?>
             <?php foreach ($this->current_codeday->sponsors as $sponsor) : ?>
-                <br /><br /><a href="<?=$sponsor->link?>"><img src="<?=$sponsor->logo?>" alt="<?=$sponsor->name?>" /></a>
+                <br /><br />
+                <?php if ($sponsor->link) : ?>
+                    <a href="<?=$sponsor->link?>"><img src="<?=$sponsor->logo?>" alt="<?=$sponsor->name?>" /></a>
+                <?php else : ?>
+                    <img src="<?=$sponsor->logo?>" alt="<?=$sponsor->name?>" />
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>
@@ -24,7 +29,7 @@
             <h1>What is CodeDay?</h1>
             <p>CodeDay is an amazing 24-hour event where students who love technology hang out and code! </p>
             <p>It will be fun for both beginners and advanced programmers!</p><br>
-            <a href="https://twitter.com/share" class="twitter-share-button" data-via="StudentRND">Tweet</a>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Register for CodeDay <?=$this->current_codeday->name?> on <?=date('M j', $this->current_codeday->start_date)?> -- " data-via="StudentRND">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
         <?php $i = 0; foreach ($this->current_codeday->blocks as $block) : $i++; if ($i == 2 || $i % 2 == 1) continue; ?>

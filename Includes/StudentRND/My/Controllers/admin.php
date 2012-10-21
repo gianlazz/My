@@ -19,6 +19,16 @@ class admin extends \CuteControllers\Base\Rest
         include(TEMPLATE_DIR . '/Home/admin.php');
     }
 
+    public function post_user_lookup()
+    {
+        $rfid = $this->request->post('rfID');
+
+        if (isset($rfid)) {
+            $rfid = new Models\Rfid($rfid);
+            $this->redirect('/user/?username=' . $rfid->user->username);
+        }
+    }
+
     public function post_create_user()
     {
         $email = $this->request->post('email');
@@ -156,9 +166,10 @@ EMAIL;
         $groupID = $this->request->post('groupID');
         $name = $this->request->post('name');
         $description = $this->request->post('description');
+        $type = $this->request->post('type');
         $has_profile_badge = $this->request->post('has_profile_badge') ? TRUE : FALSE;
 
-        if (!$name || !$description) {
+        if (!$name || !$description || !$type) {
             $error = "Name and description are required";
             include(TEMPLATE_DIR . '/Home/admin.php');
         } else {
@@ -166,7 +177,7 @@ EMAIL;
                 $group = new \StudentRND\My\Models\Group($groupID);
                 $group->name = $name;
                 $group->description = $description;
-                $group->has_group_page = $has_group_page;
+                $group->type = $type;
                 $group->has_profile_badge = $has_profile_badge;
                 $group->update();
                 $this->redirect('/admin');
@@ -181,6 +192,7 @@ EMAIL;
     {
         $name = $this->request->post('name');
         $description = $this->request->post('description');
+        $type = $this->request->post('type');
         $has_profile_badge = $this->request->post('has_profile_badge') ? TRUE : FALSE;
 
         if (!$name || !$description) {
@@ -188,7 +200,7 @@ EMAIL;
             include(TEMPLATE_DIR . '/Home/admin.php');
         } else {
             try {
-                \StudentRND\My\Models\Group::create($name, $description, $has_group_page, $has_profile_badge);
+                \StudentRND\My\Models\Group::create($name, $description, $type, $has_group_page);
                 $this->redirect('/admin');
             } catch (\Exception $ex) {
                 $error = $ex->getMessage();

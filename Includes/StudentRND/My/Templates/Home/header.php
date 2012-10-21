@@ -28,7 +28,7 @@
 <div id="main">
         <div id="index" class="container">
             <div class="row" style="margin:10px 0px"></div>
-            <a href="http://studentrnd.org/"><img src="<?=ASSETS_URI?>/img/home/srndlogotransparent.png"/></a>
+            <a href="<?=\CuteControllers\Router::get_link('/')?>"><img src="<?=ASSETS_URI?>/img/home/srndlogotransparent.png"/></a>
             <div id="whitewrap">
                 <div class="row nav-bar">
                     <div class="span8">
@@ -38,6 +38,7 @@
                                     array('name' => 'Home', 'uri' => '/home'),
                                     array('name' => 'Profile', 'uri' => '/user'),
                                     array('name' => 'Membership', 'uri' => '/subscriptions'),
+                                    array('name' => 'Directory', 'uri' => '/groups'),
                                     //array('name' => 'Groups', 'uri' => '/groups')
                                 );
 
@@ -47,6 +48,10 @@
 
                                 if (\StudentRND\My\Models\User::current()->is_admin) {
                                     $pages[] = array('name' => 'Admin', 'uri' => '/admin');
+                                }
+
+                                if (\StudentRND\My\Models\User::current()->has_group(new \StudentRND\My\Models\Group(11))) {
+                                    // Beta features go here!
                                 }
 
                                 if (isset($this)) {
@@ -69,7 +74,14 @@
                             <?php endforeach; ?>
                         </ul>
                     </div>
-                    <div class="span4" id="logout">Ahoy, <strong><?=\StudentRND\My\Models\User::current()->name?></strong>! (<a href="<?=APP_URI?>/login/bye">Not you?</a>)</div>
+                    <?php if (\StudentRND\My\Models\User::is_impersonating()) : ?>
+                        <div class="span4" id="logout" style="background-color:#D02614;color:white;position:relative;top:-4px;padding:4px;">
+                            Impersonating <strong><?=\StudentRND\My\Models\User::current()->name?></strong> -
+                            <a style="color:white;border-bottom:1px solid white;" href="<?=APP_URI?>/user/deimpersonate">Switch back!</a>
+                        </div>
+                    <?php else : ?>
+                        <div class="span4" id="logout">Ahoy, <strong><?=\StudentRND\My\Models\User::current()->name?></strong>! (<a href="<?=APP_URI?>/login/bye">Not you?</a>)</div>
+                    <?php endif; ?>
                 </div>
 
                 <?php if (isset($error)) : ?>

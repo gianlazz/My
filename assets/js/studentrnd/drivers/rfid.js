@@ -34,13 +34,35 @@ define(['jquery', 'tylermenezes/serial-bus'], function(jQuery, SerialBus) {
             }
         })
 
+        this._port = undefined;
+        Object.defineProperty(this, 'PortNumber', {
+            set: function(val)
+            {
+                _this._port = val;
+                _this.constructor();
+            },
+            get: function()
+            {
+                return _this._port;
+            }
+        })
+
         this.constructor = function()
         {
+            if (typeof(this._port) !== 'undefined') {
+                var selectedPort = this._port;
+            } else {
+                var ports = SerialBus.List;
+                var selectedPort = ports[ports.length - 1];
+            }
             // Check if the SerialServe server is up, and if so, connect to the RFID reader!
-            if (SerialBus.IsRunning && SerialBus.PortAvailable(3)) { // Check if COM3 is available, since that's where the RFID reader binds...
+            if (SerialBus.IsRunning && SerialBus.PortAvailable(selectedPort)) { // Check if COM3 is available, since that's where the RFID reader binds...
                 log('RFID is available');
-                _this.rawPort = new SerialBus.SerialPort(3);
+                _this.rawPort = new SerialBus.SerialPort(selectedPort);
                 _this.rawPort.Enable();
+                window.onbeforeunload = function() {
+                    _this.rawPort.Disable();
+                }
                 _this.rawPort.OnDataReceived.register(function(data)
                 {
                     if (!_hasRecievedTag) {

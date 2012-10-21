@@ -20,7 +20,7 @@
             $current = '/error.html';
         }
     ?>
-    <title>CodeDay <?=$pages[$current]['name']?> - StudentRND CodeDay</title>
+    <title>StudentRND CodeDay <?=$this->current_codeday->name?> - <?=$pages[$current]['name']?></title>
     <link rel="stylesheet" href="<?=ASSETS_URI?>/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="<?=ASSETS_URI?>/css/codeday.css"/>
     <link rel="image_src" href="<?=ASSETS_URI?>/img/biggestcodeday.jpg" />
@@ -61,12 +61,20 @@
             <?php elseif ($this->current_codeday->is_presale) : ?>
                 <a href=".<?=\CuteControllers\Router::get_link('/register.html');?>" class="btn btn-primary btn-large" style="text-decoration:none">Register Today!</a>
             <?php endif; ?>
-            <?=date('l F j', $this->current_codeday->start_date)?>,
+            <?=date('l F j', $this->current_codeday->start_date)?><?php if (date('Y') !== date('Y', $this->current_codeday->start_date) ||
+                    date('Y', $this->current_codeday->start_date) !== date('Y', $this->current_codeday->end_date)) : ?>, <?=date('Y', $this->current_codeday->start_date)?><?php endif; ?>,
 
             <?php if (date('ga', $this->current_codeday->start_date) == '12pm' && date('ga', $this->current_codeday->end_date) == '12pm'): ?>
                 Noon - Noon
             <?php else : ?>
-                <?date('ga', $this->current_codeday->start_date)?> to <?date('ga', $this->current_codeday->end_date)?>
+                <?=date('ga', $this->current_codeday->start_date)?> to
+                <?php if ($this->current_codeday->end_date - $this->current_codeday->start_date > (60*60*24*2)) : ?>
+                    <?=date('l F j', $this->current_codeday->end_date)?>
+                    <?php if (date('Y') !== date('Y', $this->current_codeday->end_date) ||
+                            date('Y', $this->current_codeday->start_date) !== date('Y', $this->current_codeday->end_date)) : ?>, <?=date('Y', $this->current_codeday->end_date)?><?php endif; ?>, <?=date('ga', $this->current_codeday->end_date)?>
+                <?php else : ?>
+                    <?=date('ga', $this->current_codeday->end_date)?>
+                <?php endif; ?>
             <?php endif; ?>
             at <a href="http://maps.google.com/?q=<?=urlencode($this->current_codeday->location_address)?>"><?=$this->current_codeday->location_name?></a>.
         </div>

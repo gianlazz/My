@@ -12,6 +12,14 @@ a.broken_link {
   text-decoration: none;
 }
 
+.rfid-scan {
+    display: none;
+}
+
+.rfid-scan form {
+    display: none;
+}
+
 #whitewrap {
   background: #fff;
   margin: -5px auto 0 auto;
@@ -90,6 +98,87 @@ nav-pills .active > a  {
   text-align: center;
   color: white;
   overflow: hidden;
+}
+
+.groupslist li {
+    list-style-type: none;
+    display: block;
+    float: left;
+    margin: 0 15px 15px 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 10.998px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #999;
+}
+
+.groupslist li.in {
+    background-color: #363;
+}
+
+.groupslist li.open {
+    background-color: #0f0;
+}
+
+.groupslist li.private {
+    background-color: #020;
+}
+
+.groupslist li.secret {
+    background-color: #000;
+}
+
+.groupslist li a {
+    color: white;
+    padding: 5px;
+}
+
+.directory hr {
+    visibility: hidden;
+    clear: both;
+}
+
+.directory .entry {
+    float: left;
+    padding: 0px 15px 20px 0px;
+    position: relative;
+}
+
+.directory .entry a img {
+    display: block;
+    width: 160px;
+    height: 160px;
+}
+
+.directory .entry .info {
+    border-top: 1px solid #DDD;
+    padding: 10px;
+    background-color: #F3F3F3;
+    min-height: 56px;
+    height: 56px;
+    width: 140px;
+    margin-top: 0px;
+}
+
+.directory .entry .info .first_name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.directory .entry .info .last_name {
+    font-size: 12px;
+    color: #777;
+    display: block;
+}
+
+.directory .entry .info .email {
+    color: #aaa;
+    font-size: 11px;
 }
 
 .pictures,

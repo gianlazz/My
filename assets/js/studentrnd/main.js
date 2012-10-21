@@ -29,6 +29,24 @@ define(['jquery', 'studentrnd/log'], function(jQuery){
                     }
                 );
             })
+
+            jQuery('.rfid-scan').each(function(){
+                var _scan = jQuery(this);
+                require(['studentrnd/drivers/rfid'], function(Rfid) {
+                    if (Rfid.IsAvailable) {
+                        _scan.css('display', 'block');
+
+                        var rfidForm = _scan.children('form');
+                        var rfidInput = rfidForm.children('input[name="rfID"]');
+
+                        Rfid.OnSwipe = function(token)
+                        {
+                            rfidInput.val(token);
+                            rfidForm.submit();
+                        }
+                    }
+                })
+            })
         }
         this.constructor();
     })();

@@ -2,11 +2,13 @@
 
 namespace StudentRND\My\Controllers;
 
+use \StudentRND\My\Models;
+
 class index extends \CuteControllers\Base\Rest
 {
     public function get_index()
     {
-        if (\StudentRND\My\Models\User::is_logged_in()) {
+        if (Models\User::is_logged_in()) {
             $this->redirect('/home');
         }
 
@@ -15,7 +17,7 @@ class index extends \CuteControllers\Base\Rest
 
     public function get_bye()
     {
-        if (!\StudentRND\My\Models\User::is_logged_in()) {
+        if (!Models\User::is_logged_in()) {
             $this->redirect('/login');
         }
 
@@ -44,7 +46,7 @@ class index extends \CuteControllers\Base\Rest
             require_once(TEMPLATE_DIR . '/Login/change_password.php');
         } else {
             try {
-                $user = \StudentRND\My\Models\User::current();
+                $user = Models\User::current();
                 $user->password = $password;
                 $user->update();
                 \CuteControllers\Router::redirect('/home');
@@ -74,22 +76,77 @@ class index extends \CuteControllers\Base\Rest
         parent::redirect($to);
     }
 
+    private static function parse_signed_request($signed_request) {
+        global $config;
+        list($encoded_sig, $payload) = explode('.', $signed_request, 2);
+
+        // decode the data
+        $sig = self::base64_url_decode($encoded_sig);
+        $data = json_decode(self::base64_url_decode($payload), true);
+
+        if (strtoupper($data['algorithm']) !== 'HMAC-SHA256') {
+            echo "Invalid algo";
+            exit;
+        }
+
+        $expected_sig = hash_hmac('sha256', $payload, $config['fb']['client_secret'], $raw = true);
+        if ($sig !== $expected_sig) {
+            echo "Invalid sig";
+            exit;
+        }
+
+        return $data;
+    }
+
+    private static function base64_url_decode($input) {
+        return base64_decode(strtr($input, '-_', '+/'));
+    }
+
+    public function post_canvas()
+    {
+        $data = self::parse_signed_request($this->request->post('signed_request'));
+        if (!$data) {
+            $this->redirect('/');
+        } else {
+            try {
+                $user = new Models\User(array('fb_id' => $data['user_id']));
+                $this->_login($user);
+            } catch (\TinyDb\NoRecordException $ex) {
+                $error = "You have not yet associated your account with Facebook.";
+                require_once(TEMPLATE_DIR . '/Login/index.php');
+            }
+        }
+    }
+
+    private function _login($user)
+    {
+        $user->login();
+        if ($user->password_reset_required) {
+            $this->redirect('/login/change_password');
+        } else {
+            $this->redirect('/home');
+        }
+    }
+
     public function post_index()
     {
-        try {
-            $user = new \StudentRND\My\Models\User(array('username' => $this->request->post('username')));
-        } catch (\TinyDb\NoRecordException $ex) { }
+        if ($this->request->post('username')) {
+            try {
+                $user = new Models\User(array('username' => $this->request->post('username')));
+                if ($user->validate_password($this->request->post('password'))) {
+                    $this->_login($user);
+                }
+            } catch (\TinyDb\NoRecordException $ex) { }
 
-        if (isset($user) && $user->validate_password($this->request->post('password'))) {
-            $user->login();
-            if ($user->password_reset_required) {
-                $this->redirect('/login/change_password');
-            } else {
-                $this->redirect('/home');
-            }
-        } else {
-            $error = "Login not found. Check your username and password and try again.";
-            require_once(TEMPLATE_DIR . '/Login/index.php');
+        } else if ($this->request->post('rfid-token')) {
+            try {
+                $rfid = new \StudentRND\My\Models\Rfid($this->request->post('rfid-token'));
+                $this->_login($rfid->user);
+            } catch (\TinyDb\NoRecordException $ex) { }
+
         }
+
+        $error = "Login not found. Check your username and password and try again.";
+        require_once(TEMPLATE_DIR . '/Login/index.php');
     }
 }

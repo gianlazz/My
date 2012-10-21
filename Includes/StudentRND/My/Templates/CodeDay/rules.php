@@ -8,7 +8,7 @@
         systems, both freely and commercially available.</p>
         <p>You may use languages, tools, or frameworks which you or your team developed, provided:
             <ul>
-                <li>They were generally available for the week prior to the compeition</li>
+                <li>They were generally available for the week prior to the competition</li>
                 <li>They are licensed in such a way that all teams can use them free-of-charge</li>
                 <li>You made a good faith effort to make them available to other CodeDay teams. (e.g. available without having to guess the link)</li>
                 <li>They are not engineered specifically for your team's project</li>
@@ -18,12 +18,12 @@
 
         <h2>2. Teams of 1-8 Attendees</h2>
         <p>Teams must be comprised of 1-8 people. No more than 8 people are allowed on a team without the permission of the organizers.</p>
-        <p>All team members must have registered prior to their involvement in the compeition.</p>
+        <p>All team members must have registered prior to their involvement in the competition.</p>
 
         <h2>3. <?=round(($this->current_codeday->end_date - $this->current_codeday->start_date) / (60*60))?> Hours</h2>
         <p>All work on the project must occur between the end of the kickoff and the beginning of the presentations.</p>
         <p>You can work on the concept for your project before the competition begins, including making notes, sketches, mockups, database and
-            inheritence diagrams, and storyboards, however you can not produce any production-ready content before the kickoff. This includes
+            inheritance diagrams, and storyboards, however you can not produce any production-ready content before the kickoff. This includes
             PSDs, test cases, engines (except as noted in part 1), sounds, and music. <strong>Plan, don't create.</strong></p>
 
         <h2>4. Team Profile</h2>
@@ -48,7 +48,7 @@
             takes place.</p>
         <p>The organizers may choose to factor audience opinion into judging, or provide special awards based on it.</p>
         <p>The decision of the judges is considered final.</p>
-        <p>The specifics of judging will be made clear to you early into the competion.</p>
+        <p>The specifics of judging will be made clear to you early into the competition.</p>
 
         <h2>8. Behavior</h2>
         <p>Attendees are expected to be respectful of the space and of the other attendees. Don't make a mess and clean up after yourself. Harassment,
@@ -58,7 +58,7 @@
         <h2>9. Other Rules</h2>
         <p>The organizers will interpret these rules in understanding of the spirit. They have the authority to disqualify or penalize any team for
             any reason.</p>
-        <p>Disqualified teams may be required to leave the workspace, and will not recieve refunds for ticket costs.</p>
+        <p>Disqualified teams may be required to leave the workspace, and will not receive refunds for ticket costs.</p>
     </div>
 </div>
 <?php include('footer.php'); ?>

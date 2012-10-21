@@ -17,7 +17,13 @@ class User extends \TinyDb\Orm
     public static function current()
     {
         if (self::is_logged_in()) {
-            return new self($_SESSION['userID']);
+            $user = new self($_SESSION['userID']);
+            if ($user->is_disabled) {
+                unset($_SESSION['userID']);
+                throw new \CuteControllers\HttpError(401);
+            } else {
+                return $user;
+            }
         } else {
             throw new \CuteControllers\HttpError(401);
         }
@@ -30,6 +36,23 @@ class User extends \TinyDb\Orm
     public static function is_logged_in()
     {
         return isset($_SESSION['userID']);
+    }
+
+    public static function is_impersonating()
+    {
+        return isset($_SESSION['real_userID']);
+    }
+
+    public function impersonate()
+    {
+        $_SESSION['real_userID'] = Models\User::current()->userID;
+        $_SESSION['userID'] = $this->userID;
+    }
+
+    public static function deimpersonate()
+    {
+        $_SESSION['userID'] = $_SESSION['real_userID'];
+        unset($_SESSION['real_userID']);
     }
 
     /**
@@ -77,6 +100,20 @@ class User extends \TinyDb\Orm
      * @var string
      */
     protected $email;
+
+    protected $phone;
+    protected $address1;
+    protected $address2;
+    protected $city;
+    protected $state;
+    protected $zip;
+
+    protected $fb_id;
+    protected $fb_access_token;
+
+    protected $twitter_id;
+    protected $linkedin_id;
+
     /**
      * The user's image
      * @var string
@@ -90,6 +127,7 @@ class User extends \TinyDb\Orm
     protected $studentrnd_email_enabled;
 
     protected $is_admin;
+    protected $is_disabled;
 
     protected $created_at;
     protected $modified_at;
@@ -104,7 +142,8 @@ class User extends \TinyDb\Orm
                               'password' => self::get_salted_password($password),
                               'password_reset_required' => $password_reset_required,
                               'studentrnd_email_enabled' => $studentrnd_email_enabled,
-                              'is_admin' => $is_admin));
+                              'is_admin' => $is_admin,
+                              'is_disabled' => FALSE));
     }
 
     public function __get_plans()
@@ -112,6 +151,31 @@ class User extends \TinyDb\Orm
         return new \TinyDb\Collection('\StudentRND\My\Models\Mappings\UserPlan', \TinyDb\Sql::create()
                                              ->select('*')
                                              ->from(Mappings\UserPlan::$table_name)
+                                             ->where('userID = ?', $this->userID));
+    }
+
+    public function __get_rfids()
+    {
+        return new \TinyDb\Collection('\StudentRND\My\Models\Rfid', \TinyDb\Sql::create()
+                                             ->select('*')
+                                             ->from(Models\Rfid::$table_name)
+                                             ->where('userID = ?', $this->userID));
+    }
+
+    public function __get_access_grants()
+    {
+        return new \TinyDb\Collection('\StudentRND\My\Models\AccessGrant', \TinyDb\Sql::create()
+                                             ->select('*')
+                                             ->from(Models\AccessGrant::$table_name)
+                                             ->where('userID = ? AND end > NOW()', $this->userID)
+                                             ->order_by('start ASC'));
+    }
+
+    public function __get_applications()
+    {
+        return new \TinyDb\Collection('\StudentRND\My\Models\Application', \TinyDb\Sql::create()
+                                             ->select('*')
+                                             ->from(Models\Application::$table_name)
                                              ->where('userID = ?', $this->userID));
     }
 
@@ -233,8 +297,12 @@ class User extends \TinyDb\Orm
     {
         global $config;
         if ($this->avatar_url == "") {
-            $email_hash = md5($this->email);
-            return "http://www.gravatar.com/avatar/$email_hash?s=256&d=" . urlencode($config['app']['default_avatar']);
+            if ($this->fb_id) {
+                return "https://graph.facebook.com/{$this->fb_id}/picture?type=large";
+            } else {
+                $email_hash = md5($this->email);
+                return "http://www.gravatar.com/avatar/$email_hash?s=256&d=" . urlencode($config['app']['default_avatar']);
+            }
         } else {
             return $this->avatar_url;
         }
