@@ -132,6 +132,43 @@ class User extends \TinyDb\Orm
     protected $created_at;
     protected $modified_at;
 
+    public function __validate_phone($num)
+    {
+        $cleaned_phone = preg_replace('/[^0-9]*/','', $num);
+        return in_array(strlen($cleaned_phone), array(0,7,10,11,12,13));
+    }
+
+    public function __get_phone()
+    {
+        if (!$this->phone) {
+            return NULL;
+        }
+
+        $cleaned_phone = $this->plain_phone;
+
+        $subscriber = substr($cleaned_phone, -4);
+        $exchange = substr($cleaned_phone, -7, 3);
+        $npa = substr($cleaned_phone, -10, 3);
+        $itu = substr($cleaned_phone, 0, strlen($cleaned_phone) - 10);
+
+        return "+$itu ($npa) $exchange-$subscriber";
+    }
+
+    public function __get_plain_phone()
+    {
+        $cleaned_phone = preg_replace('/[^0-9]*/','', $this->phone);
+
+        if (strlen($cleaned_phone) == 7) {
+            $cleaned_phone = "206" . $cleaned_phone;
+        }
+
+        if (strlen($cleaned_phone) == 10) {
+            $cleaned_phone = "1" . $cleaned_phone;
+        }
+
+        return $cleaned_phone;
+    }
+
     public static function create($username, $first_name, $last_name, $email, $password, $password_reset_required, $studentrnd_email_enabled, $is_admin)
     {
         return parent::create(array(
@@ -301,7 +338,7 @@ class User extends \TinyDb\Orm
                 return "https://graph.facebook.com/{$this->fb_id}/picture?type=large";
             } else {
                 $email_hash = md5($this->email);
-                return "http://www.gravatar.com/avatar/$email_hash?s=256&d=" . urlencode($config['app']['default_avatar']);
+                return "https://www.gravatar.com/avatar/$email_hash?s=256&d=" . urlencode($config['app']['default_avatar']);
             }
         } else {
             return $this->avatar_url;
@@ -315,7 +352,7 @@ class User extends \TinyDb\Orm
     public function __set_avatar_url($new)
     {
         // Set the URL to NULL if it's a gravatar
-        $gravatar = 'http://www.gravatar.com/avatar/';
+        $gravatar = 'https://www.gravatar.com/avatar/';
         if (strlen($new) >= strlen($gravatar) && substr($new, 0, strlen($gravatar)) === $gravatar) {
             $this->avatar_url = NULL;
         } else {

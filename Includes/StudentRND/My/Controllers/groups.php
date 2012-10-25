@@ -16,7 +16,7 @@ class user extends \CuteControllers\Base\Rest
         $this->user = \StudentRND\My\Models\User::current();
     }
 
-    public function get_index()
+    public function __get_index()
     {
 
         $query = \TinyDb\Sql::create()
@@ -31,7 +31,7 @@ class user extends \CuteControllers\Base\Rest
         include(TEMPLATE_DIR . '/Home/groups/index.php');
     }
 
-    public function get_page()
+    public function __get_page()
     {
         if (!isset($this->group) ||
             ($this->group->type === 'secret' && !$this->user->is_admin) ||

@@ -20,6 +20,15 @@ if (isset($config['app']['debug']) && $config['app']['debug']) {
     $config['stripe']['pub'] = $config['stripe']['test_pub'];
 }
 
+if (isset($config['app']['https_only']) && $config['app']['https_only'] &&
+    $_SERVER['HTTP_HOST'] == 'my.studentrnd.org' &&
+    !(
+     (isset($_SERVER['HTTP_HTTPS']) && $_SERVER['HTTP_HTTPS'] === 'on') ||
+     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+    )) {
+    \CuteControllers\Router::redirect("https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+}
+
 // Initialize the database
 \TinyDb\Db::set($config['database']['type'] . '://' . $config['database']['username'] . ':' . $config['database']['password'] . '@' .
                 $config['database']['host'] . '/' . $config['database']['db']);
@@ -39,8 +48,8 @@ define('UPLOADS_URI', WEB_URI . '/uploads');
 define('INCLUDES_DIR', WEB_DIR . '/Includes');
 define('INCLUDES_URI', WEB_URI . '/Includes');
 
-define('TEMPLATE_DIR', INCLUDES_DIR . '/StudentRND/My/Templates');
-define('TEMPLATE_URL', INCLUDES_URI . '/StudentRND/My/Templates');
+define('TEMPLATE_DIR', ASSETS_DIR . '/tpl');
+define('TEMPLATE_URL', ASSETS_URI . '/tpl');
 
 set_include_path(INCLUDES_DIR . PATH_SEPARATOR . get_include_path());
 
@@ -51,15 +60,15 @@ Stripe::setApiKey($config['stripe']['secret']);
 // Start routing
 try {
     \CuteControllers\Router::start('Includes/StudentRND/My/Controllers');
-} catch (\CuteControllers\HttpError $err) {
-    if ($err->getCode() == 401) {
-        \CuteControllers\Router::redirect('/login');
-    } else {
-        Header("Status: " . $err->getCode() . " " . $err->getMessage());
-        $error = "Error: " . $err->getMessage();
-        include(TEMPLATE_DIR . '/Home/error.php');
-    }
+//} catch (\CuteControllers\HttpError $err) {
+//    if ($err->getCode() == 401) {
+//        \CuteControllers\Router::redirect('/login');
+//    } else {
+//        Header("Status: " . $err->getCode() . " " . $err->getMessage());
+//        $error = "Error: " . $err->getMessage();
+//        include(TEMPLATE_DIR . '/Home/error.php');
+//    }
 } catch (\Exception $ex) {
-    $error = "Error: $ex";
+    $error = "Error:<br />" . nl2br($ex);
     include(TEMPLATE_DIR . '/Home/error.php');
 }

@@ -14,12 +14,23 @@ class admin extends \CuteControllers\Base\Rest
         }
     }
 
-    public function get_index()
+    public function __get_phpinfo()
+    {
+        phpinfo();
+        exit;
+    }
+
+    public function __get_err($code)
+    {
+        throw new \CuteControllers\HttpError($code);
+    }
+
+    public function __get_index()
     {
         include(TEMPLATE_DIR . '/Home/admin.php');
     }
 
-    public function post_user_lookup()
+    public function __post_user_lookup()
     {
         $rfid = $this->request->post('rfID');
 
@@ -29,7 +40,7 @@ class admin extends \CuteControllers\Base\Rest
         }
     }
 
-    public function post_create_user()
+    public function __post_create_user()
     {
         $email = $this->request->post('email');
         $first_name = $this->request->post('first_name');
@@ -54,7 +65,7 @@ class admin extends \CuteControllers\Base\Rest
 
                 $sitename = $config['app']['name'];
                 $domain = $config['app']['domain'];
-                $url = $config['app']['url'];
+                $url = \CuteControllers\Router::link('/login', TRUE);
 
                 $srnd_email_email = <<<EMAIL
 Additionally, you're all set to go with your apps account. You can use this to collaborate with other members. This also
@@ -89,7 +100,7 @@ EMAIL;
         }
     }
 
-    public function post_create_plan()
+    public function __post_create_plan()
     {
         $name = $this->request->post('name');
         $description = $this->request->post('description');
@@ -111,7 +122,7 @@ EMAIL;
         }
     }
 
-    public function post_update_plan()
+    public function __post_update_plan()
     {
         if ($this->request->post('delete')) {
             return $this->post_delete_plan();
@@ -144,7 +155,7 @@ EMAIL;
         }
     }
 
-    public function post_delete_plan()
+    public function __post_delete_plan()
     {
         $planID = $this->request->post('planID');
         try {
@@ -157,7 +168,7 @@ EMAIL;
         }
     }
 
-    public function post_update_group()
+    public function __post_update_group()
     {
         if ($this->request->post('delete')) {
             return $this->post_delete_group();
@@ -188,7 +199,7 @@ EMAIL;
         }
     }
 
-    public function post_create_group()
+    public function __post_create_group()
     {
         $name = $this->request->post('name');
         $description = $this->request->post('description');
@@ -209,7 +220,7 @@ EMAIL;
         }
     }
 
-    public function post_delete_group()
+    public function __post_delete_group()
     {
         $groupID = $this->request->post('groupID');
         try {

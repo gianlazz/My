@@ -2,13 +2,14 @@
 
 namespace StudentRND\My\Controllers;
 
-class index extends \CuteControllers\Base\Rest
+class home extends \CuteControllers\Base\Web
 {
     public function before()
     {
         $this->user = \StudentRND\My\Models\User::current();
     }
-    public function get_index()
+
+    public function __index()
     {
         include(TEMPLATE_DIR . '/Home/index.php');
     }

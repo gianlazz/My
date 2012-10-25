@@ -45,27 +45,27 @@ class view extends \CuteControllers\Base\Web
         }
     }
 
-    public function rules()
+    public function __rules()
     {
         require_once(TEMPLATE_DIR . '/CodeDay/rules.php');
     }
 
-    public function index()
+    public function __index()
     {
         require_once(TEMPLATE_DIR . '/CodeDay/index.php');
     }
 
-    public function schedule()
+    public function __schedule()
     {
         require_once(TEMPLATE_DIR . '/CodeDay/schedule.php');
     }
 
-    public function register()
+    public function __register()
     {
         require_once(TEMPLATE_DIR . '/CodeDay/register.php');
     }
 
-    public function faq()
+    public function __faq()
     {
         require_once(TEMPLATE_DIR . '/CodeDay/faq.php');
     }

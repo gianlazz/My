@@ -26,7 +26,7 @@ class globalController extends \CuteControllers\Base\Web
                                                      ->order_by('`end_date` DESC'));
     }
 
-    public function index()
+    public function __index()
     {
         echo "<h1>Upcoming CodeDays</h1>";
         foreach ($this->upcoming_codedays as $codeday) {

@@ -49,6 +49,11 @@ define(['jquery', 'tylermenezes/serial-bus'], function(jQuery, SerialBus) {
 
         this.constructor = function()
         {
+            if (location.protocol === 'https:') {
+                log("Cannot connect to SerialServe over https.");
+                return;
+            }
+
             if (typeof(this._port) !== 'undefined') {
                 var selectedPort = this._port;
             } else {

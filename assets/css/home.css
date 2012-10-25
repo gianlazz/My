@@ -159,7 +159,7 @@ nav-pills .active > a  {
     padding: 10px;
     background-color: #F3F3F3;
     min-height: 56px;
-    height: 56px;
+    height: 70px;
     width: 140px;
     margin-top: 0px;
 }
@@ -176,9 +176,10 @@ nav-pills .active > a  {
     display: block;
 }
 
-.directory .entry .info .email {
+.directory .entry .info .email, .directory .entry .info .phone {
     color: #aaa;
     font-size: 11px;
+    display: block;
 }
 
 .pictures,

@@ -4,7 +4,7 @@ namespace StudentRND\My\Controllers\CodeDay;
 
 class index extends \CuteControllers\Base\Web
 {
-    public function index()
+    public function __index()
     {
         $events = new \TinyDb\Collection('\StudentRND\My\Models\CodeDay\Event', \TinyDb\Sql::create()
                                          ->select('*')

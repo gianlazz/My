@@ -11,22 +11,22 @@ class subscriptions extends \CuteControllers\Base\Rest
         $this->user = \StudentRND\My\Models\User::current();
     }
 
-    public function get_index()
+    public function __get_index()
     {
-        include(TEMPLATE_DIR . '/Home/list_subscriptions.php');
+        include(TEMPLATE_DIR . '/Home/subscriptions/list.php');
     }
 
-    public function get_details()
+    public function __get_details()
     {
         $plan = new Models\Plan($this->request->request('plan'));
         if ($this->user->has_plan($plan)) {
-            include(TEMPLATE_DIR . '/Home/edit_subscription.php');
+            include(TEMPLATE_DIR . '/Home/subscriptions/edit.php');
         } else {
-            include(TEMPLATE_DIR . '/Home/new_subscription.php');
+            include(TEMPLATE_DIR . '/Home/subscriptions/new.php');
         }
     }
 
-    public function post_cancel()
+    public function __post_cancel()
     {
         $plan = new Models\Plan($this->request->post('plan'));
         $user_plan = new \StudentRND\My\Models\Mappings\UserPlan(array(
@@ -40,11 +40,11 @@ class subscriptions extends \CuteControllers\Base\Rest
             $this->redirect('/subscriptions/details?plan=' . $plan->planID);
         } catch (\Exception $ex) {
             $error = $ex->getMessage();
-            include(TEMPLATE_DIR . '/Home/edit_subscription.php');
+            include(TEMPLATE_DIR . '/Home/subscriptions/edit.php');
         }
     }
 
-    public function post_subscribe()
+    public function __post_subscribe()
     {
         $plan = new Models\Plan($this->request->post('plan'));
 
@@ -56,10 +56,10 @@ class subscriptions extends \CuteControllers\Base\Rest
 
         if (!$card_name || !$card_number || !$card_cvc || !$card_expiry_month || !$card_expiry_year) {
             $error = "All fields are required";
-            include(TEMPLATE_DIR . '/Home/new_subscription.php');
+            include(TEMPLATE_DIR . '/Home/subscriptions/new.php');
         } else if ($this->user->has_plan($plan)) {
             $error = "You are already subscribed to that plan.";
-            include(TEMPLATE_DIR . '/Home/new_subscription.php');
+            include(TEMPLATE_DIR . '/Home/subscriptions/new.php');
         } else {
             $user_plan = Models\Mappings\UserPlan::create($this->user->userID, $plan->planID, "--");
             try {
@@ -90,7 +90,7 @@ class subscriptions extends \CuteControllers\Base\Rest
             } catch (\Exception $ex) {
                 $user_plan->delete();
                 $error = $ex->getMessage();
-                include(TEMPLATE_DIR . '/Home/new_subscription.php');
+                include(TEMPLATE_DIR . '/Home/subscriptions/new.php');
             }
         }
     }

@@ -13,3 +13,6 @@
 [submodule ".submodules/FastForms"]
 	path = .submodules/FastForms
 	url = git@github.com:tylermenezes/FastForms.git
+[submodule ".submodules/Twilio"]
+	path = .submodules/Twilio
+	url = git://github.com/twilio/twilio-php.git

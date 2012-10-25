@@ -21,9 +21,7 @@ class access_control extends \CuteControllers\Base\Rest
         $acl = array();
 
         foreach ($users as $user) {
-            if ($user->has_group(new Models\Group(10)) || count($user->access_grants) > 0) {
-                $acl[] = $this->_get_user_data_contract($user);
-            }
+            $acl[] = $this->_get_user_data_contract($user);
         }
 
         $contract_acl = array(
